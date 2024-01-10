@@ -2,23 +2,22 @@ const options = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNmI2ZGJkM2YxNTIwYzU0Mzk4OGMxZWQ3ZTIwNTUyZCIsInN1YiI6IjY1OTYxYjkxNTkwN2RlNjYyNTYzYzAwZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.p8IC4h9MKHXEqeoBrSxdS0xHXBWkwoCiNYdn9Xf1HZ4"
+    
   }
 };
-fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
+fetch("https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=a500b56fec744f1019b6516fbe5be79d&targetDt=20240109", options)
   .then((response) => response.json())
   .then((response) => {
     function displayMovies() {
       // 기본 로딩 화면
-      response.results.forEach((movie) => {
+      response.boxOfficeResult.dailyBoxOfficeList.forEach((movie) => {
         const movieDiv = document.getElementById("movie");
         movieDiv.innerHTML += `
-                <li class="movieCard" movieId="${movie.id}">
-                <h2>${movie.title}</h2>
+                <li class="movieCard" movieId="${movie.movieCd}">
+                <h2>${movie.movieNm}</h2>
                 <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="">
-                <p>${movie.overview}</p>
-                <p>Ratings ${movie.vote_average}/10</p>
+                <p>랭크 ${movie.rank}</p>
+                <p>개봉일 ${movie.openDt}/10</p>
                 </li>`;
       });
       /*-------------카드 클릭 시 alert창 띄우기-----------------*/
@@ -44,24 +43,25 @@ fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", opti
       }
       surf();
     });
+
     function surf() {
       //실행할 함수
-      fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
+      fetch("https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=a500b56fec744f1019b6516fbe5be79d&targetDt=20240109", options)
         .then((response) => response.json())
         .then((response) => {
           const surfTerm = document.getElementById("surfInput").value.trim().toUpperCase(); //검색창 입력값 받아옴
           const movieDiv2 = document.getElementById("movie"); //받아온 데이터 출력할 div
-          const filtered = response.results.filter((movie) => movie.title.toUpperCase().includes(surfTerm)); //필터기능
+          const filtered = response.boxOfficeResult.dailyBoxOfficeList.filter((movie) => movie.title.toUpperCase().includes(surfTerm)); //필터기능
           console.log(filtered);
           movieDiv2.innerHTML = "";
 
           filtered.forEach((movie) => {
             movieDiv2.innerHTML += `
-                            <li class="movieCard" movieId="${movie.id}">
-                             <h2>${movie.title}</h2>
+                            <li class="movieCard" movieId="${movie.movieCd}">
+                             <h2>${movie.movieNm}</h2>
                              <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="">
-                             <p>${movie.overview}</p>
-                             <p>Ratings ${movie.vote_average}/10</p>
+                             <p>랭크 ${movie.rank}</p>
+                             <p>개봉일 ${movie.openDt}/10</p>
                              </li>`;
           });
 
