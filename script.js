@@ -44,6 +44,20 @@ fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", opti
       }
       surf();
     });
+
+    // 상세페이지로 받아올 데이터 내역
+    const movieBox = {
+      title: title,
+      release: release,
+      id: id,
+      runingTime: runingTime,
+      genre: genre,
+      director: director,
+      actors: actors
+    };
+
+    localStorage.setItem("key", Json.stringify(movieBox));
+
     function surf() {
       //실행할 함수
       fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
