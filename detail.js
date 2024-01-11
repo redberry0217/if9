@@ -1,36 +1,39 @@
-window.onload = function () {
-    document.addEventListener("DOMContentLoaded", function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const movieId = urlParams.get('id');
-        console.log(movieId);
-        const options = {
-            method: 'GET',
-            headers: {
+document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const movieId = urlParams.get('id');
+    console.log(movieId);
+    loadDetails(movieId);
+});
+
+function loadDetails(movieId) {
+    const options = {
+        method: 'GET',
+        headers: {
             accept: 'application/json',
             Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjODcyOWQ0NWJlYmUyODE2NWNkMTRiZjExNjMxODZiNyIsInN1YiI6IjY1OTUxZGQzNTkwN2RlNjlmOTYzYmVlOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ht5Y9ao6JK1UztEJ5lw7LFKMomCbsPdyFkOo0VUtBEI'
-            }
-        };
+        }
+    };
 
-        const url1 = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
-        const url2 = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`;
-        const moviePoster = document.getElementById('moviePoster');
-        const viewDetails = document.getElementById('viewDetails');
-        const aboutCast = document.querySelector('.aboutCast');
+    const url1 = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
+    const url2 = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`;
+    const moviePoster = document.getElementById('moviePoster');
+    const viewDetails = document.getElementById('viewDetails');
+    const aboutCast = document.querySelector('aboutCast');
 
-        Promise.all([
-            fetch(url1, options),
-            fetch(url2, options),
-        ])
-            .then(responses => Promise.all(responses.map(response => response.json())))
-            .then(([movieData, creditsData]) => {
-                const directors = creditsData.crew.filter(member => member.job === 'Director');
-                moviePoster.innerHTML = `
+    Promise.all([
+        fetch(url1, options),
+        fetch(url2, options),
+    ])
+        .then(responses => Promise.all(responses.map(response => response.json())))
+        .then(([movieData, creditsData]) => {
+            const directors = creditsData.crew.filter(member => member.job === 'Director');
+            moviePoster.innerHTML = `
             <img src="https://image.tmdb.org/t/p/w500/${movieData.poster_path}" alt="${movieData.title}" width="300" style="border-radius: 20px;">
             `;
-                viewDetails.innerHTML = `
+            viewDetails.innerHTML = `
             <div class="aboutMovie">
               <h1>${movieData.title}</h1>
-              <p class="tagline">"Fear can hold you prisoner. Hope can set you free."</p>
+              <p class="tagline">"${movieData.tagline}"</p>
               <p class="movieinfo">Release: ${movieData.release_date}<br>
                 Director: ${directors.map(director => director.name).join(', ')}<br>
                 Genre: ${movieData.genres.map(genre => genre.name).join(', ')}<br>
@@ -40,9 +43,9 @@ window.onload = function () {
             </div>
             `;
 
-                const actors = creditsData.cast.slice(0, 5);
-                aboutCast.innerHTML = `
-        ${actors.map(actor => `
+            const actors = creditsData.cast.slice(0, 5);
+            aboutCast.innerHTML = `
+        ${creditsData.actors.map(actor => `
             <div class="castCard">
                 <div class="castPhoto">
                 <img src="https://image.tmdb.org/t/p/w500${actor.profile_path}" alt="${actor.name}" width="100">
@@ -54,9 +57,8 @@ window.onload = function () {
             </div>
         `).join('')}
     `;
-            })
-            .catch(err => console.error(err));
-    });
+        })
+        .catch(err => console.error(err));
 }
 
 
