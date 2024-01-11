@@ -2,6 +2,7 @@ window.onload = function () {
     document.addEventListener("DOMContentLoaded", function () {
         const urlParams = new URLSearchParams(window.location.search);
         const movieId = urlParams.get('id');
+        console.log(movieId);
         const options = {
             method: 'GET',
             headers: {
