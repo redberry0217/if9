@@ -9,16 +9,16 @@ let revealArr = [];
 const getComments = () => {
   let comments = localStorage.getItem("comments");
 
-  if (comments) {
+  if (comments.length >= 1) {
     revealArr.push(JSON.parse(comments));
 
-    for (let i = 0; i < revealArr.length; i++) {
-      let boxItem = document.createElement("li");
-      boxItem.append("이름: " + revealArr[i].nickname + "댓글: " + revealArr[i].review);
-
-      let mkBoxItem = mkBoxItem + reviewBox.appendChild(boxItem);
-    }
-    return mkBoxItem;
+    revealArr.forEach((e) => {
+      const stackReview = document.getElementById("stackReview");
+      stackReview.innerHTML += `
+                  <li>이름: ${e.nickname}</li>
+                  <li>댓글: ${e.review}</li>
+                   `;
+    });
   } else {
     return alert("댓글이 존재하지 않습니다.");
   }
@@ -32,83 +32,27 @@ writeBtn.addEventListener("click", () => {
     password: password.value,
     review: review.value
   };
+  const arr = [];
 
-  localStorage.setItem("comments", JSON.stringify(reviewObj));
+  if (JSON.parse(localStorage.getItem("comments")) !== null) {
+    arr.push(...JSON.parse(localStorage.getItem("comments")));
+    arr.push(reviewObj);
+    localStorage.setItem("comments", JSON.stringify(arr));
+  } else {
+    arr.push(reviewObj);
+    localStorage.setItem("comments", JSON.stringify(arr));
+  }
+
   let writeComment = localStorage.getItem("comments");
   let tempArr = JSON.parse(writeComment);
-  let commentArr = [];
-  commentArr.push(tempArr);
 
-  for (let i = 0; i < commentArr.length; i++) {
-    let boxItem = document.createElement("li");
-    boxItem.append("이름: " + commentArr[i].nickname + "댓글: " + commentArr[i].review);
+  let [commentBox] = document.getElementsByClassName("commentBox");
+  const addComment = document.createElement("li");
 
-    reviewBox.appendChild(boxItem);
-  }
+  tempArr.forEach((e) => {
+    addComment.innerHTML = `
+    <li>이름: ${e.nickname}</li>
+    <li>댓글: ${e.review}</li>`;
+  });
+  commentBox.appendChild(addComment);
 });
-
-/*
-
-let getReview = getComments();
-getReview.push(reviewObj);
-
-localStorage.setItem("comments", JSON.stringify(getReview));
-
-
-
-function loadComments() {
-  let commentBox = document.getElementById("reviewBox");
-  commentBox.innerHTML = "";
-
-  let comments = getComments();
-
-  for (let i = 0; i < comments.length; i++) {
-    let comment = comments[i];
-
-    /*
-    const ul = document.createElement("ul");
-    const li = document.createElement("li");
-    ul.appendChild(li);
-
-    let boxItem = document.createElement("li");
-    boxItem.append("<strong>" + comment.nickname + ":</strong> " + comment.review);
-
-    commentBox.appendChild(boxItem);
-  }
-}
-
-
-commentForm.addEventListener("submit", function (e) {
-  const newComment = document.createElement("li");
-  const bTag = document.createElement("b");
-  bTag.append(nickname);
-  newComment.append(bTag);
-  newComment.append(`- ${comment}`);
-  console.log(newComment);
-
-  console.log(nicknameInput.value, passwordInput.value, reviewInput.value);
-});
-
-function createComment() {
-  const nickname = document.getElementById("nickname").value; //받아오는 입력값
-  const password = document.getElementById("password").value;
-  const review = document.getElementById("review").value;
-
-  const commentBox = {
-    nickname,
-    password,
-    review
-  };
-
-  localStorage.setItem("review", JSON.stringify(commentBox));
-  const makeCommentBox = document.createElement("div");
-
-  let getCommentBox = localStorage.getItem("review");
-  let useCommentBox = JSON.parse(getCommentBox);
-
-  makeCommentBox.append(useCommentBox);
-  return commentBox.nickname;
-}
-
-createComment();
- */
