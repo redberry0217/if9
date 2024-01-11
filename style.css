@@ -164,3 +164,90 @@ body {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 8;
 }
+
+.viewDetails {
+  justify-content: center;
+  align-items:center;
+
+}
+
+.detailCards {
+  display: flex;
+  flex-direction: row;
+  width: 1500px;
+  background-color: #3e3b3bc9;
+  border-radius: 20px;
+}
+
+.moviePoster {
+  text-align: center;
+  width: 20%;
+  padding: 35px;
+}
+
+.movieDatails {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  padding: 35px;
+  padding-left: 0px;
+  color: white;
+  background-color: rgb(58, 58, 58);
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.aboutMovie {
+  padding: 20px;
+}
+
+.aboutMovie > h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color:bisque;
+}
+
+.tagline {
+  font-size: 15pt;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.movieinfo {
+  line-height: 200%;
+  margin-bottom: 30px;
+}
+.overview {
+  line-height: 250%;
+}
+
+.aboutCast {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: center;
+}
+.castCard {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  text-align: center;
+}
+
+.castPhoto {
+  padding: 0px;
+  margin-bottom: 15px;
+}
+
+.castName {
+  font-weight: bold;
+  font-size: 12pt;
+  color: bisque;
+  margin-bottom: 10px;
+}
+
+.character {
+  font-size: 10pt;
+}
