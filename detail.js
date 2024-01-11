@@ -18,7 +18,7 @@ function loadDetails(movieId) {
     const url2 = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`;
     const moviePoster = document.getElementById('moviePoster');
     const viewDetails = document.getElementById('viewDetails');
-    const aboutCast = document.querySelector('aboutCast');
+    const aboutCast = document.getElementById('aboutCast');
 
     Promise.all([
         fetch(url1, options),
@@ -45,13 +45,13 @@ function loadDetails(movieId) {
 
             const actors = creditsData.cast.slice(0, 5);
             aboutCast.innerHTML = `
-        ${creditsData.actors.map(actor => `
+        ${actors.map(actor => `
             <div class="castCard">
                 <div class="castPhoto">
-                <img src="https://image.tmdb.org/t/p/w500${actor.profile_path}" alt="${actor.name}" width="100">
+                <img src="https://image.tmdb.org/t/p/w500${actor.profile_path}" alt="${actor.name}">
                 </div>
                 <div class="castInfo">
-                <p class="castName">${actor.name}</p>
+                <p class="castName">이름 : ${actor.name}</p>
                 <p class="character">${actor.character}</p>
                 </div>
             </div>
