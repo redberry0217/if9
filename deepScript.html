@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>영화 상세 정보</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #movie-info, #director-info, #actor-info {
+            margin: 20px 0;
+        }
+        .actor{
+            display: inline-block;
+            width: 100px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="movie-info"></div>
+    <div id="director-info"></div>
+    <div id="actor-info"></div>
+
+<script>
+window.onload = function() {
+    const id = 550; //원하는 영화의 ID
+    const options = {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjODcyOWQ0NWJlYmUyODE2NWNkMTRiZjExNjMxODZiNyIsInN1YiI6IjY1OTUxZGQzNTkwN2RlNjlmOTYzYmVlOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ht5Y9ao6JK1UztEJ5lw7LFKMomCbsPdyFkOo0VUtBEI'
+        }
+    };
+
+    fetch(`https://api.themoviedb.org/3/movie/${id}?language=ko-KR`, options)
+        .then(response => response.json())
+        .then(movieData => {
+            document.getElementById('movie-info').innerHTML = `
+                <img src="https://image.tmdb.org/t/p/w500${movieData.poster_path}" alt="${movieData.title}">
+                <h2>${movieData.title}</h2>
+                <p>Release : ${movieData.release_date}<p>
+                <p>Genre : ${movieData.genres.name}<p>
+                <p>Run time : ${movieData.runtime}<p>
+                <p>Rate : ${movieData.vote_average}</p>
+                <p>${movieData.overview}</p>
+            `;
+
+            return fetch(`https://api.themoviedb.org/3/movie/${id}/credits?language=ko-KR`, options)
+        })
+        .then(response => response.json())
+        .then(creditsData => {
+            const directors = creditsData.crew.filter(member => member.job === 'Director');
+            document.getElementById('director-info').innerHTML = 
+            `<p>Director : ${directors.map(director => director.name).join(', ')}</p>`;
+
+            const actors = creditsData.cast.slice(0, 5);
+            document.getElementById('actor-info').innerHTML = `
+                ${actors.map(actor => `
+                    <div class="actor">
+                        <img src="https://image.tmdb.org/t/p/w500${actor.profile_path}" alt="${actor.name}">
+                        <h3>이름 : ${actor.name}</h3>
+                        <p>역할 : ${actor.character}</p>
+                    </div>
+                `).join('')}
+            `;
+        })
+        .catch(err => console.error(err));
+}
+</script>
+</body>
+</html>
