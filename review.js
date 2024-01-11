@@ -4,13 +4,11 @@ const password = document.getElementById("password");
 const review = document.getElementById("review");
 const writeBtn = document.getElementById("writeBtn");
 
-let revealArr = [];
-
 const getComments = () => {
   let comments = localStorage.getItem("comments");
 
   if (comments.length >= 1) {
-    revealArr.push(JSON.parse(comments));
+    let revealArr = JSON.parse(comments);
 
     revealArr.forEach((e) => {
       const stackReview = document.getElementById("stackReview");
