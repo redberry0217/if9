@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script src="./review.css"></script>
-  <script src="./review.js"></script>
+  <script defer src="./review.js"></script>
 <body>
   <header>
     <h1>Scentflix</h1>
@@ -15,16 +15,22 @@
   </header>
   <li class="movieCard" movieId="movie.id">
     <h2>movie title</h2>
-    <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="">
+    <img src="" alt="">
     <p>영화 무척 재밌습니다 보러 오십셔</p>
     <p>Ratings 8.962/10</p>
     </li>
     <span>상세내용 박스</span>
-    <form>
-        <input type="text" placeholder="닉네임"></input>
-        <input type="password" placeholder="비밀번호"></input>
-        <input type="text" placeholder="리뷰를 작성해주세요"></input>
-        <button type="submit">작성하기</button>
-    </form>
+    
+    <div id="reviewDiv">
+      <input id="nickname" type="text" placeholder="닉네임" />
+      <input id="password" type="password" placeholder="비밀번호" />
+      <input id="review" type="text" placeholder="리뷰를 작성해주세요" />
+      <button id="writeBtn" >작성하기</button>
+    </div>
+
+    <!-- 입력된 댓글 출력할 div -->
+    <ul id="reviewBox" class="commentBox"> 
+      
+    </ul>
 </body>
 </html>
