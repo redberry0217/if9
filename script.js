@@ -9,6 +9,7 @@ const options = {
 fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
   .then((response) => response.json())
   .then((response) => {
+    console.log(response);
     function displayMovies() {
       // 기본 로딩 화면
       response.results.forEach((movie) => {
@@ -21,6 +22,7 @@ fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", opti
                 <p>Ratings ${movie.vote_average}/10</p>
                 </li>`;
       });
+
       /*-------------카드 클릭 시 alert창 띄우기-----------------*/
       const movieAll = document.querySelectorAll(".movieCard");
       movieAll.forEach((movie) => movie.addEventListener("click", clickBox));
