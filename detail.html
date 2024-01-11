@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="reset.css" />
+    <title>영화검색 Scentflix</title>
+</head>
+
+ <!-- 상단 고정 바 -->
+ <nav>
+    <div class="topNav">
+      <div class="navLogo">
+        <h1><a class="scentflix" href="">Scentflix</a></h1>
+      </div>
+      <div class="menu">
+        <a class="logo" href="index.html">
+          <h2>Top Rated</h2>
+        </a>
+      </div>
+      <div class="menu">
+        <a class="logo" href="#boxOffice">
+          <h2>Weekly Box Office</h2>
+        </a>
+      </div>
+      <div class="searchBox">
+        <p class="question">Is there any movie you want to find?</p>
+        <p class="input">
+          <input id="surfInput" type="text" placeholder="Please enter a movie title." autofocus />
+          <input id="btn" type="button" value="Search" />
+        </p>
+      </div>
+    </div>
+  </nav>
+
+<body>
+
+    <section class="viewDetails" id="viewDetails">
+        <div class="detailCards">
+          <div class="moviePoster">
+            <img src="https://image.tmdb.org/t/p/w500//q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" width="300" style="border-radius: 20px;">
+          </div>
+          <div class="movieDatails">
+            <div class="aboutMovie">
+              <h1>The Shawshank Redemption</h1>
+              <p class="tagline">"Fear can hold you prisoner. Hope can set you free."</p>
+              <p class="movieinfo">Release: 1994-09-23<br>
+                Director: Frank Darabont<br>
+                Genre: Drama, Crime<br>
+                Run time: 142min<br>
+                Rate: 8.71 / 10</p>
+              <p class="overview">"Framed in the 1940s for the double murder of his wife and her lover, upstanding banker
+                Andy Dufresne
+                begins a new life at the Shawshank prison, where he puts his accounting skills to work for an amoral warden.
+                During his long stretch in prison, Dufresne comes to be admired by the other inmates -- including an older
+                prisoner named Red -- for his integrity and unquenchable sense of hope."</p>
+    
+            </div>
+            <div class="aboutCast">
+              <div class="castCard">
+                <div class="castPhoto">
+                  <img src="https://image.tmdb.org/t/p/w500/A4fHNLX73EQs78f2G6ObfKZnvp4.jpg" width="100">
+                </div>
+                <div class="castInfo">
+                  <p class="castName">Tim Robbins</p>
+                  <p class="character">Andy Dufresne</p>
+                </div>
+              </div>
+              <div class="castCard">
+                <div class="castPhoto">
+                  <img src="https://image.tmdb.org/t/p/w500/A4fHNLX73EQs78f2G6ObfKZnvp4.jpg" width="100">
+                </div>
+                <div class="castInfo">
+                  <p class="castName">Tim Robbins</p>
+                  <p class="character">Andy Dufresne</p>
+                </div>
+              </div>
+              <div class="castCard">
+                <div class="castPhoto">
+                  <img src="https://image.tmdb.org/t/p/w500/A4fHNLX73EQs78f2G6ObfKZnvp4.jpg" width="100">
+                </div>
+                <div class="castInfo">
+                  <p class="castName">Tim Robbins</p>
+                  <p class="character">Andy Dufresne</p>
+                </div>
+              </div>
+              <div class="castCard">
+                <div class="castPhoto">
+                  <img src="https://image.tmdb.org/t/p/w500/A4fHNLX73EQs78f2G6ObfKZnvp4.jpg" width="100">
+                </div>
+                <div class="castInfo">
+                  <p class="castName">Tim Robbins</p>
+                  <p class="character">Andy Dufresne</p>
+                </div>
+              </div>
+              <div class="castCard">
+                <div class="castPhoto">
+                  <img src="https://image.tmdb.org/t/p/w500/A4fHNLX73EQs78f2G6ObfKZnvp4.jpg" width="100">
+                </div>
+                <div class="castInfo">
+                  <p class="castName">Tim Robbins</p>
+                  <p class="character">Andy Dufresne</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>    
+      </section>
+      <script src="./script.js"></script>
+</body>
+</html>
