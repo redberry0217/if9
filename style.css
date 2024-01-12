@@ -12,7 +12,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items:center;
+  align-items: last baseline;
   position: fixed;
   box-sizing: border-box;
 }
@@ -27,16 +27,10 @@ body {
   width: 200px;
 }
 
-.navLogo > h1 {
-  color: red;
-  margin: 0px;
-  font-size: 2rem;
-  font-weight: bold;
-}
-
 .scentflix {
-  color: red;
+  color: #E40514;
   margin: 0px;
+  margin-right: 30px;
   font-size: 2rem;
   font-weight: bold;
   text-decoration: none;
@@ -57,6 +51,48 @@ body {
 .searchBox {
   margin-left: 670px;
   margin-right: 50px;
+}
+
+/* 미디어 쿼리 추가 - 화면 너비가 768px 이하일 때 */
+@media screen and (max-width: 1300px) {
+  .topNav {
+    flex-direction: row;
+    align-items:last baseline;
+    height: auto;
+  }
+
+  .navLogo {
+    margin-left: 0px;
+    margin-bottom: 10px;
+  }
+
+  .searchBox {
+    margin: 0px 50px 0px 150px;
+    text-align: center;
+  }
+}
+
+/* 미디어 쿼리 추가 - 화면 너비가 900px 이하일 때 */
+@media screen and (max-width: 900px) {
+  .topNav {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
+
+  .navLogo {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+
+  .searchBox {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .head {
+    display: none;
+  }
 }
 
 .logo:visited {
