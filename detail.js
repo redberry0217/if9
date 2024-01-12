@@ -97,24 +97,30 @@ function loadDetails(movieId) {
 }
 function surf() {
   const options = {
-      method: 'GET',
-      headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjODcyOWQ0NWJlYmUyODE2NWNkMTRiZjExNjMxODZiNyIsInN1YiI6IjY1OTUxZGQzNTkwN2RlNjlmOTYzYmVlOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ht5Y9ao6JK1UztEJ5lw7LFKMomCbsPdyFkOo0VUtBEI'
-      }
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjODcyOWQ0NWJlYmUyODE2NWNkMTRiZjExNjMxODZiNyIsInN1YiI6IjY1OTUxZGQzNTkwN2RlNjlmOTYzYmVlOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ht5Y9ao6JK1UztEJ5lw7LFKMomCbsPdyFkOo0VUtBEI'
+    }
   };
 
+  const movieDiv2 = document.getElementById("movie");
+  movieDiv2.innerHTML = "";
+
+  const viewDetails = document.getElementById('viewDetails');
+  viewDetails.innerHTML = ''; // 영화 상세 정보 초기화
+
   fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
-  .then((response) => response.json())
-  .then((response) => {
+    .then((response) => response.json())
+    .then((response) => {
       const surfTerm = document.getElementById("surfInput").value.trim().toUpperCase();
       const movieDiv2 = document.getElementById("movie");
       const filtered = response.results.filter((movie) => movie.title.toUpperCase().includes(surfTerm));
       console.log(filtered);
-      movieDiv2.innerHTML = "";
+
 
       filtered.forEach((movie) => {
-          movieDiv2.innerHTML += `
+        movieDiv2.innerHTML += `
               <li class="movieCard" movieId="${movie.id}">
                   <h2>${movie.title}</h2>
                   <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="">
@@ -123,15 +129,30 @@ function surf() {
               </li>`;
       });
 
+      //밑 부분에 상세정보 뜨기
+
+
       if (!surfTerm) {
-          alert("Please enter a movie title.");
-          document.getElementById("surfInput").focus();
+        alert("Please enter a movie title.");
+        document.getElementById("surfInput").focus();
       }
 
       if (filtered.length === 0) {
-          alert(`Sorry! Not matching search keywords in this page.\nPlease enter another movie title.`);
-          document.getElementById("surfInput").focus();
+        alert(`Sorry! Not matching search keywords in this page.\nPlease enter another movie title.`);
+        document.getElementById("surfInput").focus();
       }
-  })
-  .catch((err) => console.error(err));
+    })
+    .catch((err) => console.error(err));
 }
+
+document.getElementById("movie").addEventListener("click", function(event) {
+  let target = event.target;
+  while (target != this) {
+    if (target.className == 'movieCard') {
+      const movieId = target.getAttribute('movieId');
+      window.location.href = `detail.html?id=${movieId}`;
+      return;
+    }
+    target = target.parentNode;
+  }
+});
