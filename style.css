@@ -166,9 +166,8 @@ body {
 }
 
 .viewDetails {
-  justify-content: center;
-  align-items:center;
-
+  padding-top: 100px;
+  margin-bottom: 35px;
 }
 
 .detailCards {
@@ -177,12 +176,17 @@ body {
   width: 1500px;
   background-color: #3e3b3bc9;
   border-radius: 20px;
+  margin: auto;
 }
 
 .moviePoster {
   text-align: center;
   width: 20%;
   padding: 35px;
+}
+
+.moviePoster > img:hover {
+  cursor: pointer;
 }
 
 .movieDatails {
@@ -198,7 +202,7 @@ body {
 }
 
 .aboutMovie {
-  padding: 20px;
+  padding: 35px;
 }
 
 .aboutMovie > h1 {

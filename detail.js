@@ -124,6 +124,8 @@ function surf() {
       const movieDiv2 = document.getElementById("movie");
       const filtered = response.results.filter((movie) => movie.title.toUpperCase().includes(surfTerm));
       console.log(filtered);
+      const hide = document.getElementById("hide");
+      hide.style.display = "none";
 
       filtered.forEach((movie) => {
         movieDiv2.innerHTML += `
