@@ -222,10 +222,13 @@ body {
 
 .moviePoster > img {
   width: 100%;
+  transition: transform 0.3s ease;
 }
 
 .moviePoster > img:hover {
   cursor: pointer;
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
 }
 
 .movieDatails {
