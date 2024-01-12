@@ -54,18 +54,7 @@ function surf() {
       const surfTerm = document.getElementById("surfInput").value.trim().toUpperCase(); // 검색창 입력값 받아옴
       const movieDiv2 = document.getElementById("movie"); // 받아온 데이터 출력할 div
       const filtered = response.results.filter((movie) => movie.title.toUpperCase().includes(surfTerm)); // 필터기능
-      
-      movieDiv2.innerHTML = "";
-
-      filtered.forEach((movie) => {
-        movieDiv2.innerHTML += `
-                            <li class="movieCard" movieId="${movie.id}">
-                             <h2>${movie.title}</h2>
-                             <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="">
-                             <p>${movie.overview}</p>
-                             <p>Ratings ${movie.vote_average}/10</p>
-                             </li>`;
-      });
+  
 
       if (!surfTerm) { // 검색어를 입력하지 않은 경우
         alert("Please enter a movie title.");
@@ -75,6 +64,19 @@ function surf() {
       if (filtered.length === 0) { // 검색 결과가 없는 경우
         alert(`Sorry! Not matching search keywords in this page.\nPlease enter another movie title.`);
         document.getElementById("surfInput").focus();
+        
+      } else {
+        movieDiv2.innerHTML = "";
+
+        filtered.forEach((movie) => {
+          movieDiv2.innerHTML += `
+                              <li class="movieCard" movieId="${movie.id}">
+                               <h2>${movie.title}</h2>
+                               <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="">
+                               <p>${movie.overview}</p>
+                               <p>Ratings ${movie.vote_average}/10</p>
+                               </li>`;
+        });
       }
 
       const movieAll = document.querySelectorAll(".movieCard");
