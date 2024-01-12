@@ -1,3 +1,7 @@
+* {
+  color: azure;
+}
+
 body {
   margin: 0px;
   min-height: 100vh;
@@ -239,6 +243,7 @@ body {
 .castPhoto {
   padding: 0px;
   margin-bottom: 15px;
+  width: 5;
 }
 
 .castName {
