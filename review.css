@@ -1,0 +1,10 @@
+#stackReview > li {
+  color: white;
+}
+#reviewBox > li {
+  color: white;
+}
+#stackReview {
+  width: 90%;
+  background-color: #6c6c6c;
+}

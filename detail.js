@@ -1,8 +1,8 @@
 /** index에서 카드 클릭시 영화 id 정보를 갖고 이동*/
-document.addEventListener("DOMContentLoaded", function () {
-  const urlParams = new URLSearchParams(window.location.search);
-  const movieId = urlParams.get('id');
+const urlParams = new URLSearchParams(window.location.search);
+const movieId = urlParams.get("id");
 
+document.addEventListener("DOMContentLoaded", function () {
   if (movieId) {
     loadDetails(movieId);
   }
@@ -19,10 +19,11 @@ document.addEventListener("DOMContentLoaded", function () {
 /** 상세 페이지 카드를 만드는 함수*/
 function loadDetails(movieId) {
   const options = {
-    method: 'GET',
+    method: "GET",
     headers: {
-      accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjODcyOWQ0NWJlYmUyODE2NWNkMTRiZjExNjMxODZiNyIsInN1YiI6IjY1OTUxZGQzNTkwN2RlNjlmOTYzYmVlOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ht5Y9ao6JK1UztEJ5lw7LFKMomCbsPdyFkOo0VUtBEI'
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjODcyOWQ0NWJlYmUyODE2NWNkMTRiZjExNjMxODZiNyIsInN1YiI6IjY1OTUxZGQzNTkwN2RlNjlmOTYzYmVlOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ht5Y9ao6JK1UztEJ5lw7LFKMomCbsPdyFkOo0VUtBEI"
     }
   };
 
@@ -31,16 +32,12 @@ function loadDetails(movieId) {
   const url2 = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`; // 영화 크레딧(배우, 제작진)
   const url3 = `https://api.themoviedb.org/3/movie/${movieId}/images`; // 영화 이미지
 
-  const viewDetails = document.getElementById('viewDetails');
+  const viewDetails = document.getElementById("viewDetails");
 
-  Promise.all([
-    fetch(url1, options),
-    fetch(url2, options),
-    fetch(url3, options),
-  ])
-    .then(responses => Promise.all(responses.map(response => response.json())))
+  Promise.all([fetch(url1, options), fetch(url2, options), fetch(url3, options)])
+    .then((responses) => Promise.all(responses.map((response) => response.json())))
     .then(([movieData, creditsData, imgData]) => {
-      const directors = creditsData.crew.filter(member => member.job === 'Director');
+      const directors = creditsData.crew.filter((member) => member.job === "Director");
       const actors = creditsData.cast.slice(0, 5);
       const postersData = imgData.posters.slice(0, 5);
 
@@ -50,28 +47,34 @@ function loadDetails(movieId) {
       function handleImageClick() {
         currentPosterIndex = (currentPosterIndex + 1) % postersData.length;
         const nextPosterPath = postersData[currentPosterIndex].file_path;
-        document.getElementById('moviePoster').querySelector('img').src = `https://image.tmdb.org/t/p/w500${nextPosterPath}`;
+        document
+          .getElementById("moviePoster")
+          .querySelector("img").src = `https://image.tmdb.org/t/p/w500${nextPosterPath}`;
       }
 
       /** 영화 상세내용 카드 */
       viewDetails.innerHTML = `
             <div class="detailCards">
             <div class="moviePoster" id="moviePoster">
-              <img src="https://image.tmdb.org/t/p/w500${postersData[0].file_path}" alt="${movieData.title}" title="클릭하여 다음 이미지 보기" width="300" style="border-radius: 20px;">
+              <img src="https://image.tmdb.org/t/p/w500${postersData[0].file_path}" alt="${
+        movieData.title
+      }" title="클릭하여 다음 이미지 보기" width="300" style="border-radius: 20px;">
             </div>
             <div class="movieDatails" id="movieDatails">
               <div class="aboutMovie">
                 <h1>${movieData.title}</h1>
                 <p class="tagline">"${movieData.tagline}"</p>
                 <p class="movieinfo">Release: ${movieData.release_date}<br>
-                  Director: ${directors.map(director => director.name).join(', ')}<br>
-                  Genre: ${movieData.genres.map(genre => genre.name).join(', ')}<br>
+                  Director: ${directors.map((director) => director.name).join(", ")}<br>
+                  Genre: ${movieData.genres.map((genre) => genre.name).join(", ")}<br>
                   Run time: ${movieData.runtime} min<br>
                   Rate: ${movieData.vote_average} / 10</p>
                 <p class="overview">"${movieData.overview}"</p>
               </div>
               <div class="aboutCast" id="aboutCast">
-              ${actors.map(actor => `
+              ${actors
+                .map(
+                  (actor) => `
               <div class="castCard">
                   <div class="castPhoto">
                   <img src="https://image.tmdb.org/t/p/w500${actor.profile_path}" alt="${actor.name}" width="100" style="border-radius: 10px;>
@@ -81,34 +84,38 @@ function loadDetails(movieId) {
                   <p class="character">${actor.character}</p>
                   </div>
               </div>
-              `).join('')}
+              `
+                )
+                .join("")}
             </div>
           </div> 
           `;
 
       /** 각 이미지에 클릭 이벤트 추가 */
-      const posterImages = document.querySelectorAll('.moviePoster img');
-      posterImages.forEach(img => {
-        img.removeEventListener('click', handleImageClick);
-        img.addEventListener('click', handleImageClick);
+      const posterImages = document.querySelectorAll(".moviePoster img");
+      posterImages.forEach((img) => {
+        img.removeEventListener("click", handleImageClick);
+        img.addEventListener("click", handleImageClick);
       });
     })
-    .catch(err => console.error(err));
+    .catch((err) => console.error(err));
 }
+
 function surf() {
   const options = {
-    method: 'GET',
+    method: "GET",
     headers: {
-      accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjODcyOWQ0NWJlYmUyODE2NWNkMTRiZjExNjMxODZiNyIsInN1YiI6IjY1OTUxZGQzNTkwN2RlNjlmOTYzYmVlOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ht5Y9ao6JK1UztEJ5lw7LFKMomCbsPdyFkOo0VUtBEI'
+      accept: "application/json",
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjODcyOWQ0NWJlYmUyODE2NWNkMTRiZjExNjMxODZiNyIsInN1YiI6IjY1OTUxZGQzNTkwN2RlNjlmOTYzYmVlOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ht5Y9ao6JK1UztEJ5lw7LFKMomCbsPdyFkOo0VUtBEI"
     }
   };
 
   const movieDiv2 = document.getElementById("movie");
   movieDiv2.innerHTML = "";
 
-  const viewDetails = document.getElementById('viewDetails');
-  viewDetails.innerHTML = ''; // 영화 상세 정보 초기화
+  const viewDetails = document.getElementById("viewDetails");
+  viewDetails.innerHTML = ""; // 영화 상세 정보 초기화
 
   fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
     .then((response) => response.json())
@@ -117,7 +124,6 @@ function surf() {
       const movieDiv2 = document.getElementById("movie");
       const filtered = response.results.filter((movie) => movie.title.toUpperCase().includes(surfTerm));
       console.log(filtered);
-
 
       filtered.forEach((movie) => {
         movieDiv2.innerHTML += `
@@ -130,7 +136,6 @@ function surf() {
       });
 
       //밑 부분에 상세정보 뜨기
-
 
       if (!surfTerm) {
         alert("Please enter a movie title.");
@@ -145,11 +150,11 @@ function surf() {
     .catch((err) => console.error(err));
 }
 
-document.getElementById("movie").addEventListener("click", function(event) {
+document.getElementById("movie").addEventListener("click", function (event) {
   let target = event.target;
   while (target != this) {
-    if (target.className == 'movieCard') {
-      const movieId = target.getAttribute('movieId');
+    if (target.className == "movieCard") {
+      const movieId = target.getAttribute("movieId");
       window.location.href = `detail.html?id=${movieId}`;
       return;
     }
