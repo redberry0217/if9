@@ -64,3 +64,53 @@ fetch("https://api.themoviedb.org/3/movie/now_playing", options)
 
     nowPlaying();
   });
+
+  function surf() {  
+    const surfTerm = document.getElementById("surfInput").value.trim().toUpperCase();
+    const topRatedmovieCard = document.getElementById("topRated-movieCard"); // 수정된 부분
+    
+    if (!surfTerm) {
+      alert("Please enter a movie title.");
+      document.getElementById("surfInput").focus();
+      return; // 검색어를 입력하지 않은 경우 함수 종료
+    }
+
+    fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
+      .then((response) => response.json())
+      .then((response) => {
+        const filtered = response.results.filter((movie) => movie.title.toUpperCase().includes(surfTerm));
+        console.log(filtered);
+  
+        if (filtered.length === 0) {
+          alert(`Sorry! Not matching search keywords in this page.\nPlease enter another movie title.`);
+          document.getElementById("surfInput").focus();
+        } else {
+          // 영화 목록을 표시
+          topRatedmovieCard.innerHTML = ""; // 내용을 초기화
+  
+          filtered.forEach((movie) => {
+            const movieCard = document.createElement("div");
+            movieCard.classList.add("nowplayingCard");
+            movieCard.setAttribute("movieId", movie.id);
+  
+            const movieImage = document.createElement("img");
+            movieImage.src = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+            movieImage.alt = "";
+  
+            movieCard.addEventListener("click", () => {
+              const searchQuery = encodeURIComponent(`${movie.title} trailer`);
+              window.open(`https://www.youtube.com/results?search_query=${searchQuery}`, "_blank");
+            });
+  
+            movieCard.appendChild(movieImage);
+            topRatedmovieCard.appendChild(movieCard);
+          });
+        }
+      })
+      .catch((err) => console.error(err));
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("btn").addEventListener("click", surf);
+});
+  
