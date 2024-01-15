@@ -26,21 +26,62 @@ fetch("https://api.themoviedb.org/3/movie/now_playing", options)
         movieImage.src = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
         movieImage.alt = "";
 
+        /** 포스터 이미지 클릭하면 유튜브 영상이 있는 브라우저 띄우기 */
         movieCard.addEventListener("click", () => {
-          const searchQuery = encodeURIComponent(`${movie.title} trailer`);
-          window.open(`https://www.youtube.com/results?search_query=${searchQuery}`, "_blank");
+          const movie_id = movie.id
+          fetch(`https://api.themoviedb.org/3/movie/${movie_id}/videos`, options)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error!`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            const videoKey = data.results[0].key;
+            const videoURL = `https://www.youtube.com/embed/${videoKey}`;
+
+            function openVideoPopup(videoURL) {
+              const popupWidth = 560;
+              const popupHeight = 315;
+              const left = window.innerWidth / 2 - popupWidth / 2;
+              const top = window.innerHeight / 2 - popupHeight / 2;
+
+              const popupFeatures =`width=${popupWidth},height=${popupHeight},left=${left},top=${top},resizable=yes,scrollbars=no,status=no`;
+
+              const popupWindow = window.open('', 'VideoPopup', popupFeatures);
+
+              if (popupWindow) {
+                popupWindow.document.title = 'iFlix: Watch Trailors';
+                popupWindow.document.body.style.overflow = 'hidden';
+                popupWindow.document.body.style.margin = '0px';
+                popupWindow.document.body.innerHTML = `
+                <iframe width="${popupWidth}" height="${popupHeight}" 
+                src="${videoURL}" title="Youtube video player" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen></iframe>
+                `;
+              } else {
+                alert('Popup window blocked. Please allow popups for this site.');
+              }
+            }
+            openVideoPopup(videoURL);
+          })
+          .catch((error) => {
+            alert.error("Error fetching data:", error);
+          });
         });
 
         /** 이미지 마우스 오버 효과 */
         movieCard.addEventListener("mouseover", () => {
           movieImage.style.transform = "scale(1.1)";
-          movieImage.style.filter = "brightness(0.5)";
+          movieImage.style.filter = "brightness(0.4)";
 
           const movieInfo = document.createElement("div");
           movieInfo.classList.add("movieInfo");
           movieInfo.innerHTML = `
             <p class="playingtitle">${movie.title}</p>
             <p class="releaseDate">Release Date<br>${movie.release_date}</p>
+            <p class="releaseDate">Rate<br>${movie.vote_average}</p>
           `;
 
           movieCard.appendChild(movieInfo);
@@ -65,6 +106,9 @@ fetch("https://api.themoviedb.org/3/movie/now_playing", options)
     nowPlaying();
   });
 
+
+
+  /** 검색 기능 */
   function surf() {  
     const surfTerm = document.getElementById("surfInput").value.trim().toUpperCase();
     const topRatedmovieCard = document.getElementById("topRated-movieCard"); // 수정된 부분
