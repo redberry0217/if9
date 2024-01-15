@@ -3,56 +3,75 @@ const nickname = document.getElementById("nickname");
 const password = document.getElementById("password");
 const review = document.getElementById("review");
 const writeBtn = document.getElementById("writeBtn");
+const nothing = document.getElementById("nothing");
+// 현재 시간
+const today = new Date();
+const year = today.getFullYear();
+const month = today.getMonth() + 1;
+const day = today.getDate();
+const hour = modifyNumber(today.getHours());
+const min = modifyNumber(today.getMinutes());
+const sec = modifyNumber(today.getSeconds());
+function modifyNumber(time) {
+  if (parseInt(time) < 10) {
+    return "0" + time;
+  } else return time;
+}
+const formatDate = year + "." + ("00" + month.toString()).slice(-2) + "." + ("00" + day.toString()).slice(-2);
 
 const getComments = () => {
-  // 우리는 항상 comments가 배열일 것이라고 생각했음
-  // 근데 막상 해보니 null이 나옴 -> 왜? localStorage에 'comments'라는 이름으로 아무것도 없었기 때문
-
-  // (1) 첫 번째 방법(일반 if문)
-  // if (!localStorage.getItem("comments")) { // null, undefined, ""
-  //   // 값이 없는 경우
-  //   comments = [];
-  // } else {
-  //   // 값이 있는 경우
-  //   comments = localStorage.getItem("comments");
-  // }
-
-  // (2) 두 번째 방법(null 병합연산자)
-  // let comments = localStorage.getItem("comments") ?? [];
   const id = movieId;
-  let comments = localStorage.getItem(`comments${id}`) ?? [];
-  console.log(id);
-  console.log(`comments${id}`);
+  let comments = localStorage.getItem(`comments${id}`) ? localStorage.getItem(`comments${id}`) : [];
 
-  // (3) 세 번째 방법(3항연산자)
-  // let comments = localStorage.getItem("comments") ? localStorage.getItem("comments") : [];
   if (comments.length >= 1) {
     //Cannot read properties of null (reading 'length')
+    nothing.remove();
     let revealArr = JSON.parse(comments);
-    console.log(revealArr);
     revealArr.forEach((e) => {
       let stackReview = document.getElementById("stackReview");
-      console.log(stackReview);
       stackReview.innerHTML += `
-                  <li>이름: ${e.nickname}</li>
-                  <li>댓글: ${e.review}</li>
-                   `;
+                  <ul>
+                  <li>${e.nickname}</li>
+                  <span>${formatDate}</span>
+                  <hr></hr>
+                  <li> ${e.review}</li>
+                  </ul>`;
     });
-  } else {
-    return alert("댓글이 존재하지 않습니다.");
   }
 };
 
 getComments();
 
-writeBtn.addEventListener("click", () => {
+writeBtn.addEventListener("click", mkReview);
+function mkReview() {
   const id = movieId;
   const reviewObj = {
     nickname: nickname.value,
     password: password.value,
     review: review.value
   };
-  const arr = [];
+
+  //빈칸인 채로 입력 시, 경고문구 띄우기
+  if (reviewObj.nickname == "") {
+    alert("닉네임을 입력해주세요.");
+    nickname.focus();
+    return;
+  } else if (reviewObj.password == "") {
+    alert("비밀번호를 입력해주세요.");
+    password.focus();
+    return;
+  } else if (reviewObj.review == "") {
+    alert("리뷰를 작성해주세요.");
+    review.focus();
+    return;
+  }
+
+  if (reviewObj.password.length < 4 || reviewObj.password.length > 6) {
+    alert("비밀번호를 4~6글자 사이로 설정해주세요.");
+    password.focus();
+    return;
+  }
+  const arr = []; //이전에 작성했던 데이터 초기화 및 새로 작성한 데이터 저장
 
   if (JSON.parse(localStorage.getItem(`comments${id}`)) !== null) {
     arr.push(...JSON.parse(localStorage.getItem(`comments${id}`)));
@@ -64,19 +83,26 @@ writeBtn.addEventListener("click", () => {
   }
 
   let writeComment = localStorage.getItem(`comments${id}`);
+
   let tempArr = JSON.parse(writeComment);
 
+  console.log(writeComment.nickname);
   let [commentBox] = document.getElementsByClassName("commentBox");
-  const addComment = document.createElement("li");
-
+  const addComment = document.createElement("ul");
+  console.log(commentBox);
   tempArr.forEach((e) => {
     addComment.innerHTML = `
-    <li>이름: ${e.nickname}</li>
-    <li>댓글: ${e.review}</li>`;
+      <li>${e.nickname}</li>
+      <span>${formatDate}</span>
+      <hr></hr>
+      <li> ${e.review}</li>`;
   });
-  commentBox.appendChild(addComment);
-  // if (password === (maxlength = "4")) {
-  // } else {
-  //   alert("비밀번호는 4글자로 ");
-  // }
+  commentBox.prepend(addComment);
+}
+
+reviewDiv.addEventListener("keydown", ({ key }) => {
+  if (key !== "Enter") {
+    return;
+  }
+  mkReview();
 });
