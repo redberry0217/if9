@@ -48,44 +48,46 @@ surfInput.addEventListener("keydown", ({ key }) => {
 
 /** 검색하기 함수 */
 function surf() {
-  fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
-    .then((response) => response.json())
-    .then((response) => {
-      const surfTerm = document.getElementById("surfInput").value.trim().toUpperCase(); // 검색창 입력값 받아옴
-      const movieDiv2 = document.getElementById("movie"); // 받아온 데이터 출력할 div
-      const filtered = response.results.filter((movie) => movie.title.toUpperCase().includes(surfTerm)); // 필터기능
+  const surfTerm = document.getElementById("surfInput").value.trim().toUpperCase();
+  const movieDiv2 = document.getElementById("movie");
 
-      movieDiv2.innerHTML = "";
+  if (!surfTerm) {
+    // 검색어를 입력하지 않은 경우
+    alert("Please enter a movie title.");
+    document.getElementById("surfInput").focus();
+  } else {
+    fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
+      .then((response) => response.json())
+      .then((response) => {
+        const filtered = response.results.filter((movie) => movie.title.toUpperCase().includes(surfTerm));
 
-      filtered.forEach((movie) => {
-        movieDiv2.innerHTML += `
-                            <li class="movieCard" movieId="${movie.id}">
-                             <h2>${movie.title}</h2>
-                             <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="">
-                             <p>${movie.overview}</p>
-                             <p>Ratings ${movie.vote_average}/10</p>
-                             </li>`;
-      });
+        if (filtered.length === 0) {
+          // 검색 결과가 없는 경우
+          alert(`Sorry! Not matching search keywords in this page.\nPlease enter another movie title.`);
+          document.getElementById("surfInput").focus();
+        } else {
+          movieDiv2.innerHTML = ""; // 여기로 이동
 
-      if (!surfTerm) {
-        // 검색어를 입력하지 않은 경우
-        alert("Please enter a movie title.");
-        document.getElementById("surfInput").focus();
-      }
+          filtered.forEach((movie) => {
+            movieDiv2.innerHTML += `
+              <li class="movieCard" movieId="${movie.id}">
+                <h2>${movie.title}</h2>
+                <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="">
+                <p>${movie.overview}</p>
+                <p>Ratings ${movie.vote_average}/10</p>
+              </li>`;
+          });
+        }
 
-      if (filtered.length === 0) {
-        // 검색 결과가 없는 경우
-        alert(`Sorry! Not matching search keywords in this page.\nPlease enter another movie title.`);
-        document.getElementById("surfInput").focus();
-      }
+        const movieAll = document.querySelectorAll(".movieCard");
+        movieAll.forEach((movieCard) => movieCard.addEventListener("click", clickBox));
 
-      const movieAll = document.querySelectorAll(".movieCard");
-      movieAll.forEach((movieCard) => movieCard.addEventListener("click", clickBox));
-
-      function clickBox(event) {
-        const movieId = event.currentTarget.getAttribute("movieId");
-        window.location.href = `detail.html?id=${movieId}`;
-      }
-    })
-    .catch((err) => console.error(err));
+        function clickBox(event) {
+          const movieId = event.currentTarget.getAttribute("movieId");
+          window.location.href = `detail.html?id=${movieId}`;
+        }
+      })
+      .catch((err) => console.error(err));
+  }
 }
+
