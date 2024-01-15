@@ -46,10 +46,16 @@
     </section>
     <section id="hide">
       <div id="reviewDiv">
-        <input id="nickname" type="text" placeholder="닉네임" />
-        <input id="password" type="password" placeholder="비밀번호" />
-        <input id="review" type="text" placeholder="리뷰를 작성해주세요" />
-        <button id="writeBtn">작성하기</button>
+        <h2 class="division">Review</h2>
+        <div class="line2"></div>
+        <div class="personal">
+          <input id="nickname" type="text" placeholder="닉네임" />
+          <input id="password" type="password" minlength="4" maxlength="6" placeholder="비밀번호" />
+        </div>
+        <div class="reviewInput">
+          <input id="review" type="text" placeholder="리뷰를 작성해주세요" />
+          <button id="writeBtn">작성하기</button>
+        </div>
       </div>
 
       <!-- 입력된 댓글 출력할 div -->

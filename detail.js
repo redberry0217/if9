@@ -60,6 +60,7 @@ function loadDetails(movieId) {
         movieData.title
       }" title="클릭하여 다음 이미지 보기" width="300" style="border-radius: 20px;">
             </div>
+            <div class="line"></div>
             <div class="movieDatails" id="movieDatails">
               <div class="aboutMovie">
                 <h1>${movieData.title}</h1>
