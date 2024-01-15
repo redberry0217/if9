@@ -3,6 +3,20 @@ const nickname = document.getElementById("nickname");
 const password = document.getElementById("password");
 const review = document.getElementById("review");
 const writeBtn = document.getElementById("writeBtn");
+// 현재 시간
+const today = new Date();
+const year = today.getFullYear();
+const month = today.getMonth() + 1;
+const day = today.getDate();
+const hour = modifyNumber(today.getHours());
+const min = modifyNumber(today.getMinutes());
+const sec = modifyNumber(today.getSeconds());
+function modifyNumber(time) {
+  if (parseInt(time) < 10) {
+    return "0" + time;
+  } else return time;
+}
+const formatDate = year + "." + ("00" + month.toString()).slice(-2) + "." + ("00" + day.toString()).slice(-2);
 
 const getComments = () => {
   const id = movieId;
@@ -16,6 +30,7 @@ const getComments = () => {
       stackReview.innerHTML += `
                   <ul>
                   <li>${e.nickname}</li>
+                  <span>${formatDate}</span>
                   <hr></hr>
                   <li> ${e.review}</li>
                   </ul>`;
@@ -57,11 +72,6 @@ function mkReview() {
   });
   console.log(commentBox);
   commentBox.prepend(addComment);
-
-  // if (password.length < 4 || password.length > 6) {
-  //   alert("비밀번호는 4~6글자로 설정해주세요");
-  //   password.focus();
-  // }
 }
 document.getElementById("review").addEventListener("keydown", ({ key }) => {
   if (key !== "Enter") {
