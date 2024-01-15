@@ -118,3 +118,13 @@ hr {
   font-weight: bold;
   margin-top: 10px;
 }
+#nothing {
+  height: 100px;
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+  padding-top: 65px;
+  padding-right: 10%;
+}
