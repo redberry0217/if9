@@ -97,6 +97,7 @@ function mkReview() {
       <hr></hr>
       <li> ${e.review}</li>`;
   });
+  nothing.remove();
   commentBox.prepend(addComment);
 }
 
