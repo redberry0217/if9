@@ -118,7 +118,7 @@ function surf() {
     return; // 검색어를 입력하지 않은 경우 함수 종료
   }
 
-  fetch("https://api.themoviedb.org/3/movie/now_playing", options)
+  fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
     .then((response) => response.json())
     .then((response) => {
       const filtered = response.results.filter((movie) => movie.title.toUpperCase().includes(surfTerm));
