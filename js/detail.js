@@ -56,8 +56,9 @@ function loadDetails(movieId) {
       viewDetails.innerHTML = `
             <div class="detailCards">
             <div class="moviePoster" id="moviePoster">
-              <img src="https://image.tmdb.org/t/p/w500${postersData[0].file_path}" alt="${movieData.title
-        }" title="클릭하여 다음 이미지 보기" width="300" style="border-radius: 20px;">
+              <img src="https://image.tmdb.org/t/p/w500${postersData[0].file_path}" alt="${
+        movieData.title
+      }" title="클릭하여 다음 이미지 보기" width="300" style="border-radius: 20px;">
             </div>
             <div class="line"></div>
             <div class="movieDatails" id="movieDatails">
@@ -73,8 +74,8 @@ function loadDetails(movieId) {
               </div>
               <div class="aboutCast" id="aboutCast">
               ${actors
-          .map(
-            (actor) => `
+                .map(
+                  (actor) => `
               <div class="castCard">
                   <div class="castPhoto">
                   <img src="https://image.tmdb.org/t/p/w500${actor.profile_path}" alt="${actor.name}" width="100" style="border-radius: 10px;>
@@ -85,8 +86,8 @@ function loadDetails(movieId) {
                   </div>
               </div>
               `
-          )
-          .join("")}
+                )
+                .join("")}
             </div>
           </div> 
           `;
@@ -131,7 +132,7 @@ function surf() {
         alert(`Sorry! Not matching search keywords in this page.\nPlease enter another movie title.`);
         document.getElementById("surfInput").focus();
       } else {
-        // 영화 목록을 표시
+        // 영화 카드를 표시
         filtered.forEach((movie) => {
           movieDiv2.innerHTML += `
           <li class="movieCard" movieId="${movie.id}">
@@ -141,14 +142,14 @@ function surf() {
             <p>Ratings ${movie.vote_average}/10</p>
           </li>`;
         });
-
-        // 영화 목록을 표시한 후에 hide를 숨김
+        // 영화 카드를 표시한 후에 영화 상세설명을 숨김
+        viewDetails.remove();
+        // 영화 카드를 표시한 후에 hide를 숨김
         const hide = document.getElementById("hide");
         hide.style.display = "none";
       }
     })
     .catch((err) => console.error(err));
-
 
   document.getElementById("movie").addEventListener("click", function (event) {
     let target = event.target;

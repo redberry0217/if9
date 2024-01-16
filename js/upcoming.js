@@ -17,9 +17,10 @@ fetch("https://api.themoviedb.org/3/movie/now_playing", options)
       const nowPlayingContainer = document.getElementById("nowPlaying");
 
       response.results.forEach((movie) => {
-        const movieCard = document.createElement("div");
-        movieCard.classList.add("nowplayingCard");
-        movieCard.setAttribute("movieId", movie.id);
+        nowPlaying.innerHTML;
+        const nowCard = document.createElement("div");
+        nowCard.classList.add("nowplayingCard");
+        nowCard.setAttribute("movieId", movie.id);
 
         const movieImage = document.createElement("img");
         movieImage.src = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
@@ -27,7 +28,7 @@ fetch("https://api.themoviedb.org/3/movie/now_playing", options)
 
         /** 포스터 이미지 클릭하면 유튜브 영상이 있는 브라우저 띄우기 */
 
-        movieCard.addEventListener("click", () => {
+        nowCard.addEventListener("click", () => {
           const movie_id = movie.id;
           fetch(`https://api.themoviedb.org/3/movie/${movie_id}/videos`, options)
             .then((response) => {
@@ -72,7 +73,7 @@ fetch("https://api.themoviedb.org/3/movie/now_playing", options)
         });
 
         /** 이미지 마우스 오버 효과 */
-        movieCard.addEventListener("mouseover", () => {
+        nowCard.addEventListener("mouseover", () => {
           movieImage.style.transform = "scale(1.1)";
           movieImage.style.filter = "brightness(0.4)";
 
@@ -84,22 +85,22 @@ fetch("https://api.themoviedb.org/3/movie/now_playing", options)
             <p class="releaseDate">Rate<br>${movie.vote_average}</p>
           `;
 
-          movieCard.appendChild(movieInfo);
+          nowCard.appendChild(movieInfo);
         });
 
         /** 이미지 마우스 아웃 시 효과 제거 */
-        movieCard.addEventListener("mouseout", () => {
+        nowCard.addEventListener("mouseout", () => {
           movieImage.style.transform = "";
           movieImage.style.filter = "";
 
-          const movieInfo = movieCard.querySelector(".movieInfo");
+          const movieInfo = nowCard.querySelector(".movieInfo");
           if (movieInfo) {
-            movieCard.removeChild(movieInfo);
+            nowCard.removeChild(movieInfo);
           }
         });
 
-        movieCard.appendChild(movieImage);
-        nowPlayingContainer.appendChild(movieCard);
+        nowCard.appendChild(movieImage);
+        nowPlayingContainer.appendChild(nowCard);
       });
     }
 
@@ -109,7 +110,7 @@ fetch("https://api.themoviedb.org/3/movie/now_playing", options)
 /** 검색 기능 */
 function surf() {
   const surfTerm = document.getElementById("surfInput").value.trim().toUpperCase();
-  const topRatedmovieCard = document.getElementById("topRated-movieCard"); // 수정된 부분
+  const topRatednowCard = document.getElementById("topRated-nowCard"); // 수정된 부분
 
   if (!surfTerm) {
     alert("Please enter a movie title.");
@@ -117,7 +118,7 @@ function surf() {
     return; // 검색어를 입력하지 않은 경우 함수 종료
   }
 
-  fetch("https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1", options)
+  fetch("https://api.themoviedb.org/3/movie/now_playing", options)
     .then((response) => response.json())
     .then((response) => {
       const filtered = response.results.filter((movie) => movie.title.toUpperCase().includes(surfTerm));
@@ -128,18 +129,20 @@ function surf() {
         document.getElementById("surfInput").focus();
       } else {
         // 영화 목록을 표시
-        topRatedmovieCard.innerHTML = ""; // 내용을 초기화
+        topRatednowCard.innerHTML = ""; // 내용을 초기화
 
         filtered.forEach((movie) => {
-          const movieCard = document.createElement("div");
-          movieCard.classList.add("nowplayingCard");
-          movieCard.setAttribute("movieId", movie.id);
+          const nowCard = document.createElement("div");
+          nowCard.classList.add("nowplayingCard");
+          nowCard.innerHTML += `<li class="nowCard" movieId="${movie.id}">
+          <h2>${movie.title}</h2>
+          <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" alt="">
+          <p>${movie.overview}</p>
+          <p class="releaseDate">Release Date<br>${movie.release_date}</p>
+          <p class="releaseDate">Rate<br>${movie.vote_average}</p>
+        </li>`;
 
-          const movieImage = document.createElement("img");
-          movieImage.src = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
-          movieImage.alt = "";
-
-          movieCard.addEventListener("click", () => {
+          nowCard.addEventListener("click", () => {
             const movie_id = movie.id;
             fetch(`https://api.themoviedb.org/3/movie/${movie_id}/videos`, options)
               .then((response) => {
@@ -182,45 +185,14 @@ function surf() {
                 alert.error("Error fetching data:", error);
               });
           });
-
-          /** 이미지 마우스 오버 효과 */
-          movieCard.addEventListener("mouseover", () => {
-            movieImage.style.transform = "scale(1.1)";
-            movieImage.style.filter = "brightness(0.4)";
-
-            const movieInfo = document.createElement("div");
-            movieInfo.classList.add("movieInfo");
-            movieInfo.innerHTML = `
-                <p class="playingtitle">${movie.title}</p>
-                <p class="releaseDate">Release Date<br>${movie.release_date}</p>
-                <p class="releaseDate">Rate<br>${movie.vote_average}</p>
-              `;
-
-            movieCard.appendChild(movieInfo);
-          });
-
-          /** 이미지 마우스 아웃 시 효과 제거 */
-          movieCard.addEventListener("mouseout", () => {
-            movieImage.style.transform = "";
-            movieImage.style.filter = "";
-
-            const movieInfo = movieCard.querySelector(".movieInfo");
-            if (movieInfo) {
-              movieCard.removeChild(movieInfo);
-            }
-          });
-
-          movieCard.appendChild(movieImage);
-          topRatedmovieCard.appendChild(movieCard);
+          topRatednowCard.appendChild(nowCard);
         });
       }
     })
     .catch((err) => console.error(err));
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("btn").addEventListener("click", surf);
-});
+document.getElementById("btn").addEventListener("click", surf);
 document.getElementById("surfInput").addEventListener("keydown", ({ key }) => {
   // 엔터키로 검색어 입력 시, 데이터 찾기 실행
   if (key !== "Enter") {
